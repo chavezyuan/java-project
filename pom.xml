@@ -503,11 +503,7 @@
                 <version>${auto-scan-conf.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.didichuxing.lang.support</groupId>
-                <artifactId>common</artifactId>
-                <version>${support-common.version}</version>
-            </dependency>
+
 
             <dependency>
                 <groupId>commons-httpclient</groupId>
