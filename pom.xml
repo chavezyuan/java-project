@@ -535,16 +535,13 @@
 		
     </dependencyManagement>
 
+    <!--
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>com.juvenxu.portable-config-maven-plugin</groupId>
-                    <artifactId>portable-config-maven-plugin</artifactId>
-                    <version>1.1.5</version>
-                </plugin>
+
             </plugins>
         </pluginManagement>
     </build>
-
+    -->
 </project>
