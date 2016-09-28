@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation=" 
+           http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+           http://www.springframework.org/schema/context 
+           http://www.springframework.org/schema/context/spring-context-3.1.xsd 
+           http://www.springframework.org/schema/jdbc
+      	   http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+           http://www.springframework.org/schema/mvc 
+           http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+           http://www.springframework.org/schema/tx 
+           http://www.springframework.org/schema/tx/spring-tx-3.1.xsd"
+	default-autowire="byName">
+	
+	<bean id="main_dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.main.url}"/>
+		<!-- <property name="username" value="${jdbc.main.username}" />
+		<property name="password" value="" /> -->
+
+		<!-- Connection Pooling DBCP -->
+		<!-- <property name="validationQuery" value="SELECT 1" />
+		<property name="initialSize" value="${dbcp.initialSize}" />
+		<property name="maxActive" value="${dbcp.maxActive}" />
+		<property name="maxIdle" value="${dbcp.maxIdle}" />
+		<property name="maxWait" value="${dbcp.maxWait}" />
+		<property name="poolPreparedStatements" value="${dbcp.poolPreparedStatements}" />
+		<property name="defaultAutoCommit" value="${dbcp.defaultAutoCommit}" /> -->
+	</bean>
+	
+	<!-- id不要配置为sqlSessionFactory，否则会导致application.properties中的配置无法载入dataSource中 -->
+	<bean id="test_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="main_dataSource" />
+		<property name="mapperLocations" value="classpath*:mapper/*Mapper.xml" />
+	</bean>
+	
+	<bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.spring.demo.mapper" />
+		<property name="sqlSessionFactoryBeanName" value="test_sqlSessionFactory" />
+<!-- 		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property> -->
+	</bean>
+	
+	<!-- <bean id="mappers" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.dhf.mobile.protect.dao.log.mapper" />
+	</bean> -->
+</beans>

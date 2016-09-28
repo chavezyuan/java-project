@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation=" 
+           http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+           http://www.springframework.org/schema/context 
+           http://www.springframework.org/schema/context/spring-context-3.1.xsd 
+           http://www.springframework.org/schema/mvc 
+           http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+           http://www.springframework.org/schema/tx 
+           http://www.springframework.org/schema/tx/spring-tx-3.1.xsd"
+	default-autowire="byName">
+
+<!-- 
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:application.properties</value>
+			</list>
+		</property>
+	</bean>
+ -->	
+	<!-- 使用disconf必须添加以下配置 -->
+	<bean id="disconfMgrBean" class="com.baidu.disconf.client.DisconfMgrBean"
+		destroy-method="destroy">
+		<property name="scanPackage"
+			value="com.didichuxing.lang.disconf,com.didichuxing.lang.resource" />
+	</bean>
+
+	<bean id="disconfMgrBean2" class="com.baidu.disconf.client.DisconfMgrBeanSecond"
+		init-method="init" destroy-method="destroy">
+	</bean>
+
+	<!-- 使用托管方式的disconf配置(无代码侵入, 配置更改会自动reload)-->
+	<bean id="configproperties_disconf"
+		class="com.baidu.disconf.client.addons.properties.ReloadablePropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>classpath:application.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="propertyConfigurer"
+		class="com.baidu.disconf.client.addons.properties.ReloadingPropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="propertiesArray">
+			<list>
+				<ref bean="configproperties_disconf" />
+			</list>
+		</property>
+	</bean> 
+
+</beans>
